@@ -1,0 +1,109 @@
+* {
+    /* 盒模型不会因为盒子的变化影响布局，会挤压盒内部的内容 */
+    box-sizing: border-box;
+}
+
+/* 设置根变量 */
+:root {
+    --n: 1;
+}
+
+body {
+    /* 主色调的色相和亮度设置 */
+    --h: 212deg;
+    --l: 43%;
+    /* 主品牌颜色，基于HSL颜色模型 */
+    --brandColor: hsl(var(--h), 71%, var(--l));
+    font-family: sans-serif;
+    margin: 0;
+    background-color: whitesmoke;
+}
+
+p {
+    line-height: 1.6;
+}
+
+ol {
+    /* 有序列表去掉默认格式 */
+    list-style: none;
+    /* padding有上下左右四个方向，两个值的话第一个控制上下，第二个控制左右 */
+    padding: 0 1rem; 
+    counter-reset: list;
+    --length: 5; /* 设置列表项总数 */
+}
+
+li {
+    /* 设置变量 */
+    /* 计算每张卡片的进度长度 */
+    --stop: calc(100% / var(--length) * var(--i));
+    --l: 62%;
+    --l2: 88%;
+    /* 为每个卡片动态计算颜色 */
+    --h: calc((var(--i) - 1) * (180 / var(--length)));
+    --c1: hsl(var(--h), 71%, var(--l));
+    --c2: hsl(var(--h), 71%, var(--l2));
+
+    position: relative;
+    counter-increment: list;
+    max-width: 45rem;
+    margin: 1rem auto;
+    padding: 2rem 1rem 1rem;
+    border-radius: 0.25rem;
+    overflow: hidden;
+    background-color: white;
+    /* 添加阴影效果 */
+    box-shadow: 0.1rem 0.1rem 1.5rem rgba(0, 0, 0, 0.3);
+}
+
+li::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 1rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* 渐变背景，从 c1 到 c2 的渐变长度由 stop 控制 */
+    background: linear-gradient(
+        to right,
+        var(--c1) var(--stop),
+        var(--c2) var(--stop)
+    );
+}
+
+h3 {
+    display: flex;
+    align-items: baseline;
+    margin: 0 0 1rem;
+    color: rgb(70, 70, 70);
+}
+
+h3::before{
+    /* 使用计数器显示每个列表项的编号 */
+    content: counter(list);
+    display: flex;
+    justify-content: center; /* 居中对齐内容 */
+    align-items: center; /* 垂直居中内容 */
+    width: 3rem; /* 设置伪元素的宽度 */
+    height: 3rem; /* 设置伪元素的高度 */
+    border-radius: 50%; /* 使元素变为圆形 */
+    background-color: var(--c1); /* 使用动态变量设置背景色 */
+    color: #fff; /* 设置文本颜色为白色 */
+    margin-right: 1rem; /* 右侧外边距 */
+    font-size: 1.5rem;
+}
+
+/* 自适应responsive */
+@media (min-width:40em){
+    li{
+        margin: 3rem auto;
+        padding: 3rem 2rem 2rem;
+    }
+    h3{
+        font-size: 2.25rem;
+        margin: 0 0 2rem;
+    }
+    h3::before{
+        margin-right: 1.5rem;
+    }
+}
